@@ -6,45 +6,56 @@
 import React, {
   AppRegistry,
   Component,
+  Image,
   StyleSheet,
   Text,
   View
 } from 'react-native';
 
+var MOCKED_FAVORITES_DATA = [
+  {name: 'Name', url: 'url', language: {thumbnail: 'http://i.imgur.com/UePbdph.jpg'}},
+];
+
 class my_favorites extends Component {
   render() {
+    var favorite = MOCKED_FAVORITES_DATA[0];
     return (
       <View style={styles.container}>
-        <Text style={styles.welcome}>
-          Meu primeiro aplicativo
-        </Text>
-        <Text style={styles.instructions}>
-          E eu quero dizer que
-        </Text>
-        <Text style={styles.instructions}>
-          Te amo amor
-        </Text>
+        <Image 
+          source={{uri: favorite.language.thumbnail}}
+          style={styles.thumbnail}
+        /> 
+        <View style={styles.rightContainer}>
+          <Text style={styles.name}>{favorite.name}</Text>
+          <Text style={styles.url}>{favorite.url}</Text>
+        </View>
       </View>
     );
   }
 }
 
-const styles = StyleSheet.create({
+var styles = StyleSheet.create({
   container: {
     flex: 1,
+    flexDirection: 'row',
     justifyContent: 'center',
     alignItems: 'center',
     backgroundColor: '#F5FCFF',
   },
-  welcome: {
-    fontSize: 20,
-    textAlign: 'center',
-    margin: 10,
+  rightContainer: {
+    flex: 1,
   },
-  instructions: {
+  thumbnail: {
+    width: 53,
+    height: 81,
+  },
+  name: {
+    fontSize: 20,
+    marginBottom: 8,
+    textAlign: 'center', 
+  },
+  url: {
     textAlign: 'center',
-    color: '#333333',
-    marginBottom: 5,
   },
 });
 
