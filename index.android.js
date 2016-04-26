@@ -12,19 +12,56 @@ import React, {
   View
 } from 'react-native';
 
-var MOCKED_FAVORITES_DATA = [
-  {name: 'Name', url: 'url', language: {thumbnail: 'http://i.imgur.com/UePbdph.jpg'}},
-];
+var REQUEST_URL = 'https://fathomless-lake-61988.herokuapp.com/favorites.json';
 
 class my_favorites extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      loaded: false,
+    };
+  }
+
+  componenetDidMount() {
+    this.fetchData();
+  }
+
+  fetchData() {
+    fetch(REQUEST_URL)
+      .then((response) => response.json())
+      .then((responseData) => {
+        this.setState({
+          favorites: responseData,
+          loaded: true,
+        });
+      })
+      .done();
+  }
+
   render() {
-    var favorite = MOCKED_FAVORITES_DATA[0];
+    if (!this.state.loaded) {
+      return this.renderLoadingView();
+    }
+
+    var favorite = this.state.favorites[0];
+    return this.renderFavorite(favorite);
+  }
+
+  renderLoadingView() {
     return (
       <View style={styles.container}>
-        <Image 
+        <Text>Loading favorites...</Text>
+      </View>
+    );
+  }
+
+  renderFavorite(favorite) {
+    return (
+      <View style={styles.container}>
+        <Image
           source={{uri: favorite.language.thumbnail}}
           style={styles.thumbnail}
-        /> 
+        />
         <View style={styles.rightContainer}>
           <Text style={styles.name}>{favorite.name}</Text>
           <Text style={styles.url}>{favorite.url}</Text>
@@ -52,7 +89,7 @@ var styles = StyleSheet.create({
   name: {
     fontSize: 20,
     marginBottom: 8,
-    textAlign: 'center', 
+    textAlign: 'center',
   },
   url: {
     textAlign: 'center',
